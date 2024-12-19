@@ -1,10 +1,9 @@
-// src/components/Navbar.tsx
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext'; // Adjust the import path if necessary
 import { auth } from './firebaseConfig'; // Adjust the import path if necessary
 import { signOut } from 'firebase/auth';
-import { FaUserCircle } from 'react-icons/fa';
+import { FaUserCircle, FaRegComment, FaCoins } from 'react-icons/fa'; // Import the icons
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +15,10 @@ const Navbar: React.FC = () => {
   const handleLogout = async () => {
     await signOut(auth);
     alert("You have signed out.");
+    setIsOpen(false); // Close the menu on logout
   };
+
+  const closeMenu = () => setIsOpen(false); // Function to close the menu
 
   return (
     <nav className="w-full bg-black bg-opacity-70 p-4">
@@ -47,8 +49,7 @@ const Navbar: React.FC = () => {
           {user ? (
             <div className="flex items-center">
               <FaUserCircle className="text-green-500 text-2xl cursor-pointer mr-4" onClick={handleLogout} />
-                <span className="text-green-500">Logout</span>
-
+              <span className="text-green-500">Logout</span>
             </div>
           ) : (
             <>
@@ -72,35 +73,36 @@ const Navbar: React.FC = () => {
       {isOpen && (
         <div className="md:hidden bg-gray bg-opacity-80 p-4">
           <div className="flex flex-col items-start">
-            <Link to="/" className="block text-white px-3 py-2 rounded hover:bg-yellow-500 font-boogalo">
+            <Link to="/" className="block text-white px-3 py-2 rounded hover:bg-yellow-500 font-boogalo" onClick={closeMenu}>
               Home
             </Link>
-            <Link to="/about" className="block text-white px-3 py-2 rounded hover:bg-yellow-500 font-boogalo">
+            <Link to="/about" className="block text-white px-3 py-2 rounded hover:bg-yellow-500 font-boogalo" onClick={closeMenu}>
               About
             </Link>
-            <Link to="/services" className="block text-white px-3 py-2 rounded hover:bg-yellow-500 font-boogalo">
+            <Link to="/services" className="block text-white px-3 py-2 rounded hover:bg-yellow-500 font-boogalo" onClick={closeMenu}>
               Our Services
             </Link>
-            <Link to="/career" className="block text-white px-3 py-2 rounded hover:bg-yellow-500 font-boogalo">
+            <Link to="/career" className="block text-white px-3 py-2 rounded hover:bg-yellow-500 font-boogalo" onClick={closeMenu}>
               Career
             </Link>
-            <a href="#contact" className="block text-white px-3 py-2 rounded hover:bg-yellow-500 font-boogalo">
+            <a href="#contact" className="block text-white px-3 py-2 rounded hover:bg-yellow-500 font-boogalo" onClick={closeMenu}>
               Contact
             </a>
 
             {/* Conditional Rendering for Mobile Login/Logout */}
             {user ? (
-              <div className="flex items-center">
-               <FaUserCircle className="text-green-500 text-2xl cursor-pointer mr-4" onClick={handleLogout} />
+              <div className="flex items-center justify-between w-full">
+                <FaUserCircle className="text-green-500 text-2xl cursor-pointer mr-4" onClick={handleLogout} />
+                <FaRegComment className="text-yellow-500 text-2xl cursor-pointer mr-4" onClick={closeMenu} />
+                <FaCoins className="text-yellow-500 text-2xl cursor-pointer" onClick={closeMenu} />
                 <span className="text-green-500">Logout</span>
-
               </div>
             ) : (
               <>
-                <Link to="/login" className="block text-white px-3 py-2 rounded hover:bg-yellow-500 font-boogalo">
+                <Link to="/login" className="block text-white px-3 py-2 rounded hover:bg-yellow-500 font-boogalo" onClick={closeMenu}>
                   Login
                 </Link>
-                <Link to="/signup" className="block text-white px-3 py-2 rounded hover:bg-yellow-500 font-boogalo">
+                <Link to="/signup" className="block text-white px-3 py-2 rounded hover:bg-yellow-500 font-boogalo" onClick={closeMenu}>
                   Sign Up
                 </Link>
               </>

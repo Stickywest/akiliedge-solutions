@@ -42,26 +42,31 @@ const Career: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-[#f4c1c1] to-[#f8e4e4] p-8">
-      <div className="flex flex-wrap lg:flex-nowrap items-center gap-8 max-w-6xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-r from-[#f4c1c1] to-[#f8e4e4] p-4 md:p-8">
+      <div className="flex flex-wrap lg:flex-nowrap items-center gap-6 max-w-6xl mx-auto">
         {/* Left Section */}
         <div className="hidden lg:block w-1/2 animate__animated animate__fadeInLeft">
           <img
             src="/akiliedge-solutions/src/assets/career1.png"
             alt="Team working together"
-            className="rounded-lg shadow-lg"
+            className="rounded-lg"
           />
         </div>
 
         {/* Form Section */}
-        <div className="w-full lg:w-1/2 bg-white p-8 rounded-lg shadow-lg animate__animated animate__zoomIn">
-          <h2 className="text-4xl font-bold text-[#972326] text-center mb-6">Join Our Team</h2>
-          <p className="text-gray-700 text-center mb-10">
+        <div className="w-full lg:w-1/2 bg-white p-6 md:p-8 rounded-lg shadow-lg animate__animated animate__zoomIn">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#972326] text-center mb-4 md:mb-6">
+            Join Our Team
+          </h2>
+          {/* Conditionally hide description on smaller screens */}
+          <p className="text-gray-700 text-center mb-6 md:mb-10 hidden md:block">
             Explore exciting career opportunities and become part of our developer community!
           </p>
           <form onSubmit={handleSubmit}>
-            <div className="mb-6">
-              <label htmlFor="name" className="block text-gray-700 font-medium mb-2">Name</label>
+            <div className="mb-4 md:mb-6">
+              <label htmlFor="name" className="block text-gray-700 font-medium mb-2">
+                Name
+              </label>
               <input
                 type="text"
                 id="name"
@@ -72,8 +77,10 @@ const Career: React.FC = () => {
                 required
               />
             </div>
-            <div className="mb-6">
-              <label htmlFor="email" className="block text-gray-700 font-medium mb-2">Email</label>
+            <div className="mb-4 md:mb-6">
+              <label htmlFor="email" className="block text-gray-700 font-medium mb-2">
+                Email
+              </label>
               <input
                 type="email"
                 id="email"
@@ -84,7 +91,7 @@ const Career: React.FC = () => {
                 required
               />
             </div>
-            <div className="mb-6">
+            <div className="mb-4 md:mb-6">
               <label htmlFor="specialization" className="block text-gray-700 font-medium mb-2">
                 Area of Specialization
               </label>
@@ -104,7 +111,7 @@ const Career: React.FC = () => {
                 <option value="ai-ml">AI/ML</option>
               </select>
             </div>
-            <div className="mb-6">
+            <div className="mb-4 md:mb-6">
               <label className="block text-gray-700 font-medium mb-2">Programming Languages</label>
               <div className="flex flex-wrap gap-4">
                 {["JavaScript", "Python", "Java", "C++", "Ruby", "Go"].map((lang) => (

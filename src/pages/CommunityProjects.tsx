@@ -17,7 +17,7 @@ const projects: Project[] = [
     title: "Green Leaders Initiative",
     status: "Completed",
     description: "Promoting sustainable agriculture practices in rural areas.",
-    imageUrl: "/src/assets/trees.avif",
+    imageUrl: "/akiliedge-solutions/src/assets/trees.avif",
     details: "A full description of the Green Leaders Initiative project...",
   },
   {
@@ -25,7 +25,7 @@ const projects: Project[] = [
     title: "Water Conservation Drive",
     status: "Ongoing",
     description: "Improving water resources in drought-affected regions.",
-    imageUrl: "/src/assets/water.webp",
+    imageUrl: "/akiliedge-solutions/src/assets/water.webp",
     details: "A full description of the Water Conservation Drive project...",
   },
   {
@@ -33,7 +33,7 @@ const projects: Project[] = [
     title: "Renewable Energy in Schools",
     status: "Upcoming",
     description: "Implementing solar panels in schools to reduce energy costs.",
-    imageUrl: "/src/assets/solar.jpg",
+    imageUrl: "/akiliedge-solutions/src/assets/solar.jpg",
     details: "A full description of the Renewable Energy in Schools project...",
   },
 ];

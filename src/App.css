@@ -90,3 +90,23 @@ html, body {
 .animate-wave {
   animation: wave 0.5s ease-in-out infinite;
 }
+.fade-in {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.5s, transform 0.5s;
+}
+.fade-in.hidden {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+.community-text {
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 0.5s, transform 0.5s;
+}
+
+.community-text.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+/* CSS */

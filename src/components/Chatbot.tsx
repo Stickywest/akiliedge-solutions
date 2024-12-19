@@ -1,126 +1,107 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-const Chatbot: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [question, setQuestion] = useState('');
-  const [answer, setAnswer] = useState('');
+// Define the type for a message in the conversation
+type Message = {
+  type: "user" | "ai"; // Either "user" or "ai"
+  text: string; // The content of the message
+};
 
-  // Google Generative AI API key
-  const apiKey = 'AIzaSyAmpWcsFZohxtsxAJzQoBm9BquvoGWvjy0'; // replace with your actual key
+function ChatComponent() {
+  const [question, setQuestion] = useState<string>(""); // The current question being asked
+  const [conversation, setConversation] = useState<Message[]>([]); // Store the conversation (array of messages)
+  const [loading, setLoading] = useState<boolean>(false); // Loading state for the AI response
+  const [isOpen, setIsOpen] = useState<boolean>(false); // Whether the chat input is open
 
-  const toggleChat = () => setIsOpen(!isOpen);
-
-  const handleAskQuestion = async () => {
+  const askQuestion = async () => {
     if (!question) {
-      setAnswer('Please enter a question.');
+      alert("Please enter a question.");
       return;
     }
 
-    // Predefined responses for basic questions
-    const responses: { [key: string]: string } = {
-      'what does akiliedge do': 'Akiliedge Solutions provides sustainable tech solutions with a focus on cutting-edge technology and innovation.',
-      'what is your vision': 'Our vision is to empower communities through sustainable and innovative technology solutions.',
-      'where are you located': 'We are located in [Your Location, e.g., Nairobi, Kenya].',
-      'what is your phone number': 'You can reach us at +254-XXXX-XXXXXX.',
-      'what are your business hours': 'We are open from Monday to Friday, 9 AM to 5 PM.',
-      'tell me about akiliedge solutions': 'Akiliedge Solutions is dedicated to providing top-notch technology solutions that empower businesses and communities. Our services range from IoT to software development and more.',
-    };
+    try {
+      setLoading(true);
+      const res = await fetch("http://127.0.0.1:5000/ask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ question }),
+      });
+      const data = await res.json();
 
-    // Attempt to match the question to a predefined answer
-    const lowerCaseQuestion = question.toLowerCase();
-    const matchedAnswer = Object.keys(responses).find((key) =>
-      lowerCaseQuestion.includes(key)
-    );
-
-    if (matchedAnswer) {
-      setAnswer(responses[matchedAnswer]);
-    } else {
-      // If no match is found, use the Google API to fetch a response
-      try {
-        const response = await fetch(
-          `https://generativeai.googleapis.com/v1beta2/models/text-bison-001:generateText?key=${apiKey}`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              prompt: question,
-              temperature: 0.7,
-              max_output_tokens: 150,
-            }),
-          }
-        );
-
-        // Log the response status and headers for debugging
-        console.log('Response Status:', response.status);
-        console.log('Response Headers:', response.headers);
-
-        const data = await response.json();
-        console.log('API Response:', data); // Log the entire response
-
-        // Check if the response was successful
-        if (!response.ok) {
-          throw new Error(`Error ${response.status}: ${response.statusText}`);
-        }
-
-        // Set the answer from the API response
-        setAnswer(data.candidates?.[0]?.output || 'No response received from AI');
-      } catch (error) {
-        console.error('Error fetching answer:', error);
-        setAnswer('There was an issue fetching a response from the AI. Please try again later.');
+      if (res.ok) {
+        // Add the new question and answer to the conversation history
+        setConversation([
+          ...conversation,
+          { type: "user", text: question },
+          { type: "ai", text: data.answer },
+        ]);
+        setQuestion(""); // Clear the input after sending
+      } else {
+        alert(`Error: ${data.error}`);
       }
+    } catch (error) {
+      console.error("Error asking question:", error);
+      alert("An error occurred while fetching the answer.");
+    } finally {
+      setLoading(false);
     }
-
-    setQuestion(''); // Clear the question input after response
   };
 
   return (
-    <>
-      {/* Floating chat icon */}
+    <div className="relative">
+      {/* Chat Icon Button */}
       <button
-        onClick={toggleChat}
-        className="fixed bottom-8 right-8 bg-[#972326] text-white rounded-full p-4 shadow-lg hover:bg-[#a5362a] focus:outline-none"
+        className="fixed bottom-8 right-8 bg-[#AC2027] text-white p-3 rounded-full shadow-lg hover:bg-[#AC2027] focus:outline-none"
+        onClick={() => setIsOpen(!isOpen)}
       >
-        💬
+        <i className="fas fa-comment"></i>
       </button>
 
-      {/* Chatbot window */}
+      {/* Chat Input Section */}
       {isOpen && (
-        <div className="fixed bottom-20 right-8 bg-white border rounded-lg shadow-lg p-4 w-80 max-h-[80vh] overflow-y-auto">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold text-[#972326]">Akiliedge Support</h2>
-            <button onClick={toggleChat} className="text-gray-500 hover:text-gray-700">&times;</button>
-          </div>
-
-          <div className="space-y-4">
-            <div>
-              <label className="block text-gray-700 font-semibold">Ask a Question</label>
-              <input
-                type="text"
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
-                className="w-full p-2 border rounded focus:outline-none"
-                placeholder="Type your question..."
-              />
-              <button
-                onClick={handleAskQuestion}
-                className="w-full mt-2 bg-[#972326] text-white font-semibold rounded p-2 hover:bg-[#a5362a]"
-              >
-                Send
-              </button>
+        <div className="fixed bottom-16 right-4 bg-white p-4 border rounded-lg shadow-lg sm:w-80 w-[90%] max-h-[70vh] overflow-y-auto sm:right-8">
+          <h2 className="text-xl mb-2 text-[#AC2027]">Ask a Question</h2>
+          <div className="mb-4">
+            {/* Display Conversation */}
+            <div className="space-y-2">
+              {conversation.map((message, index) => (
+                <div
+                  key={index}
+                  className={`p-2 rounded-lg ${
+                    message.type === "user"
+                      ? "bg-[#fed90f] text-black text-right"
+                      : "bg-[#A8CE3B] text-black text-left"
+                  }`}
+                >
+                  {message.text}
+                </div>
+              ))}
             </div>
-
-            {answer && (
-              <div className="bg-yellow-50 p-2 rounded border border-yellow-200 text-gray-700">
-                <p>{answer}</p>
-              </div>
-            )}
           </div>
+          <textarea
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            placeholder="Type your question here..."
+            className="w-full p-2 border border-gray-300 rounded mb-2"
+          />
+          <button
+            onClick={askQuestion}
+            disabled={loading}
+            className="w-full bg-[#AC2027] text-white p-2 rounded-lg hover:bg-[#A8CE3B] focus:outline-none"
+          >
+            {loading ? "Processing..." : "Ask"}
+          </button>
+          <button
+            onClick={() => setIsOpen(false)}
+            className="mt-2 text-gray-500"
+          >
+            Close
+          </button>
         </div>
       )}
-    </>
+    </div>
   );
-};
+}
 
-export default Chatbot;
+export default ChatComponent;

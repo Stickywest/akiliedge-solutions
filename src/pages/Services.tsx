@@ -1,4 +1,3 @@
-// src/pages/Services.tsx
 import React, { useState } from 'react';
 
 const servicesList = [
@@ -6,6 +5,7 @@ const servicesList = [
   { id: 2, title: "Product Design", description: "Innovative design solutions that transform ideas into tangible products.", image: "/akiliedge-solutions/src/assets/product.jpg" },
   { id: 3, title: "Web Design", description: "Creative and responsive web design services that enhance user experience.", image: "/akiliedge-solutions/src/assets/webd.jpg" },
   { id: 4, title: "Software Development", description: "Custom software solutions tailored to meet your unique business needs.", image:"/akiliedge-solutions/src/assets/product.png" },
+  { id: 5, title: "Internet Of Things", description: "Custom software solutions tailored to meet your unique business needs.", image:"/akiliedge-solutions/src/assets/product.png" },
 ];
 
 const Services: React.FC = () => {
@@ -61,7 +61,7 @@ const Services: React.FC = () => {
       {/* Modal for Form */}
       {selectedService && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-1/3 animate__animated animate__fadeIn">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full md:w-1/3 animate__animated animate__fadeIn">
             <h3 className="text-2xl font-semibold mb-4">{selectedService.title}</h3>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
