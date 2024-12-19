@@ -4,6 +4,7 @@ import { AuthContext } from '../context/AuthContext'; // Adjust the import path 
 import { auth } from './firebaseConfig'; // Adjust the import path if necessary
 import { signOut } from 'firebase/auth';
 import { FaUserCircle, FaRegComment, FaCoins } from 'react-icons/fa'; // Import the icons
+import logoImage from "../assets/logo1.png";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +25,7 @@ const Navbar: React.FC = () => {
     <nav className="w-full bg-black bg-opacity-70 p-4">
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center">
-          <img src="/akiliedge-solutions/src/assets/logo1.png" alt="logo" className="h-10 mr-2" />
+        <img src={logoImage} alt="logo" className="h-10 mr-2" />;
         </div>
 
         {/* Desktop Links */}

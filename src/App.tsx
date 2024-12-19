@@ -1,3 +1,4 @@
+// src/App.tsx
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -13,14 +14,17 @@ import CommunityProjects from './pages/CommunityProjects';
 import ProjectDetail from './pages/ProjectDetail';
 import Login from './components/Login';
 import Signup from './components/Signup';
+import Dashboard from './pages/Dashboard'; // Import the Dashboard component
 import { AuthProvider } from './context/AuthContext';
 import Chatbot from './components/Chatbot';
 import SocialMediaIcons from './components/SocialMediaIcons'; // Import the Social Media Icons component
+import TopPerformers from './components/dashboard/TopPerformers';
+ // Import the TopPerformers component
 
 const App: React.FC = () => {
   return (
     <AuthProvider>
-      <Router basename="/akiliedge-solutions">
+      <Router>
         <div className="min-h-screen flex flex-col relative bg-gray-100">
           {/* Fixed Social Media Icons */}
           <SocialMediaIcons />
@@ -40,6 +44,10 @@ const App: React.FC = () => {
               <Route path="/community-projects/:id" element={<ProjectDetail />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/dashboard" element={<Dashboard />}>
+                {/* Add the TopPerformers component to the Dashboard route */}
+                <Route index element={<TopPerformers />} /> 
+              </Route>
             </Routes>
           </main>
 

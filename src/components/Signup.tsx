@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FaGoogle } from 'react-icons/fa';
 import { auth } from './firebaseConfig'; // Adjust path if necessary
 import { signInWithPopup, createUserWithEmailAndPassword, GoogleAuthProvider } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
 
 const provider = new GoogleAuthProvider(); // Initialize Google Auth Provider
 
@@ -9,12 +10,14 @@ const Signup: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   // Handle email/password signup
   const handleEmailSignup = async () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       alert('Signup successful!');
+      navigate('/dashboard'); // Redirect to the dashboard after successful signup
     } catch (err) {
       setError((err as Error).message);
     }
@@ -25,6 +28,7 @@ const Signup: React.FC = () => {
     try {
       await signInWithPopup(auth, provider);
       alert('Google signup successful!');
+      navigate('/dashboard'); // Redirect to the dashboard after successful signup
     } catch (err) {
       setError((err as Error).message);
     }

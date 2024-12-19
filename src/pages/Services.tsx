@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
 
+// Import images
+import aiImage from "../assets/AI.png";
+import productDesignImage from "../assets/product.jpg";
+import webDesignImage from "../assets/webd.jpg";
+import softwareDevelopmentImage from "../assets/product.png";
+import iotImage from "../assets/product.png";
+
 const servicesList = [
-  { id: 1, title: "AI Solutions", description: "Harness the power of artificial intelligence to optimize your business processes.", image: "/akiliedge-solutions/src/assets/AI.png" },
-  { id: 2, title: "Product Design", description: "Innovative design solutions that transform ideas into tangible products.", image: "/akiliedge-solutions/src/assets/product.jpg" },
-  { id: 3, title: "Web Design", description: "Creative and responsive web design services that enhance user experience.", image: "/akiliedge-solutions/src/assets/webd.jpg" },
-  { id: 4, title: "Software Development", description: "Custom software solutions tailored to meet your unique business needs.", image:"/akiliedge-solutions/src/assets/product.png" },
-  { id: 5, title: "Internet Of Things", description: "Custom software solutions tailored to meet your unique business needs.", image:"/akiliedge-solutions/src/assets/product.png" },
+  { id: 1, title: "AI Solutions", description: "Harness the power of artificial intelligence to optimize your business processes.", image: aiImage },
+  { id: 2, title: "Product Design", description: "Innovative design solutions that transform ideas into tangible products.", image: productDesignImage },
+  { id: 3, title: "Web Design", description: "Creative and responsive web design services that enhance user experience.", image: webDesignImage },
+  { id: 4, title: "Software Development", description: "Custom software solutions tailored to meet your unique business needs.", image: softwareDevelopmentImage },
+  { id: 5, title: "Internet Of Things", description: "Custom software solutions tailored to meet your unique business needs.", image: iotImage },
 ];
 
 const Services: React.FC = () => {
@@ -28,8 +35,23 @@ const Services: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log(formData);
+
+    if (selectedService) {
+      // Construct the WhatsApp URL
+      const phoneNumber = "254703373810"; // Replace with your WhatsApp number in international format (without the +)
+      const message = `Hello! I am interested in your service: ${selectedService.title}. 
+Here are my details:
+- Name: ${formData.name}
+- Email: ${formData.email}
+- Phone: ${formData.phone}`;
+
+      const encodedMessage = encodeURIComponent(message);
+      const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+      // Redirect to WhatsApp
+      window.location.href = whatsappUrl;
+    }
+
     setSelectedService(null); // Close the form
     setFormData({ name: '', email: '', phone: '' }); // Reset form
   };

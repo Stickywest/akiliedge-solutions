@@ -3,30 +3,34 @@ import React, { useState } from 'react';
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from './firebaseConfig';
 import { FaGoogle } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
 
 const provider = new GoogleAuthProvider(); // Initialize Google Auth Provider
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      alert("Login successful!");
+      alert('Login successful!');
+      navigate('/dashboard'); // Redirect to the dashboard after successful login
     } catch (err) {
-      setError("Failed to log in. Please check your credentials.");
+      setError('Failed to log in. Please check your credentials.');
     }
   };
 
   const handleGoogleLogin = async () => {
     try {
       await signInWithPopup(auth, provider);
-      alert("Google login successful!");
+      alert('Google login successful!');
+      navigate('/dashboard'); // Redirect to the dashboard after successful login
     } catch (err) {
-      setError("Failed to log in with Google.");
+      setError('Failed to log in with Google.');
     }
   };
 

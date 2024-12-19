@@ -1,13 +1,16 @@
 import React, { useState } from "react";
-import { db } from "../components/firebaseConfig";
-import { collection, addDoc } from "firebase/firestore";
+import axios from "axios";  // Add Axios for making HTTP requests
+import careerImage from "../assets/career1.png";
+import { useNavigate } from 'react-router-dom';
 
 const Career: React.FC = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     specialization: "",
     languages: [] as string[],
+    
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -32,11 +35,16 @@ const Career: React.FC = () => {
     e.preventDefault();
 
     try {
-      await addDoc(collection(db, "careers"), formData);
-      alert("Thank you for joining our community!");
-      setFormData({ name: "", email: "", specialization: "", languages: [] });
+      // Sending data to Flask backend
+      const response = await axios.post("https://3139-62-24-118-61.ngrok-free.app/career/submit", formData);
+
+      if (response.status === 201) {
+        alert("Thank you for joining our community!");
+        setFormData({ name: "", email: "", specialization: "", languages: [] });
+        navigate('/Signup');
+      }
     } catch (error) {
-      console.error("Error adding document: ", error);
+      console.error("Error submitting career form: ", error);
       alert("There was an error submitting your application. Please try again.");
     }
   };
@@ -47,7 +55,7 @@ const Career: React.FC = () => {
         {/* Left Section */}
         <div className="hidden lg:block w-1/2 animate__animated animate__fadeInLeft">
           <img
-            src="/akiliedge-solutions/src/assets/career1.png"
+            src={careerImage}
             alt="Team working together"
             className="rounded-lg"
           />
