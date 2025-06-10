@@ -14,6 +14,7 @@ import AIProductsViewer from '../components/dashboard/AIProductsViewer';
 import CareerViewer from '../components/dashboard/CareerViewer';
 import AddComponent from '../components/dashboard/AddComponent';
 
+import BlogUpdate from '../components/dashboard/BlogUpade';
 const Dashboard: React.FC = () => {
   const [currentUserEmail, setCurrentUserEmail] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -51,6 +52,7 @@ const Dashboard: React.FC = () => {
               {isAdmin && (
               
                 <CareerViewer />
+                
 
             )}
             </div>
@@ -60,6 +62,7 @@ const Dashboard: React.FC = () => {
             {isAdmin && (
               
               <AddComponent />
+              
 
           )}
               <TopPerformers />
@@ -69,6 +72,8 @@ const Dashboard: React.FC = () => {
               <div className="mt-6 space-y-6">
                 <TotalSignups />
                 <AIProductsManager />
+              <BlogUpdate/>
+                
               </div>
             )}
           </>

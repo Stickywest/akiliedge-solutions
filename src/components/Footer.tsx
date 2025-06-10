@@ -28,7 +28,8 @@ const Footer: React.FC = () => (
       </div>
     </div>
     <div className="border-t border-yellow-700 mt-6 pt-4">
-      &copy; 2024 Akiliedge Solutions. All rights reserved.
+    <p className="text-sm">&copy; {new Date().getFullYear()} Your Company. All rights reserved.</p>
+    
     </div>
   </footer>
 );

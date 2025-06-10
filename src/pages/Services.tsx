@@ -5,7 +5,7 @@ import aiImage from "../assets/AI.png";
 import productDesignImage from "../assets/product.jpg";
 import webDesignImage from "../assets/webd.jpg";
 import softwareDevelopmentImage from "../assets/product.png";
-import iotImage from "../assets/product.png";
+import iotImage from "../assets/iot.avif";
 
 const servicesList = [
   { id: 1, title: "AI Solutions", description: "Harness the power of artificial intelligence to optimize your business processes.", image: aiImage },

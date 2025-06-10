@@ -1,84 +1,137 @@
-// src/components/Login.tsx
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from './firebaseConfig';
 import { FaGoogle } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
+import { useNavigate } from 'react-router-dom';
 
-const provider = new GoogleAuthProvider(); // Initialize Google Auth Provider
+const provider = new GoogleAuthProvider();
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+    
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      alert('Login successful!');
-      navigate('/dashboard'); // Redirect to the dashboard after successful login
+      navigate('/'); // Redirect to home page
     } catch (err) {
       setError('Failed to log in. Please check your credentials.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    setError(null);
+    
     try {
       await signInWithPopup(auth, provider);
-      alert('Google login successful!');
-      navigate('/dashboard'); // Redirect to the dashboard after successful login
+      navigate('/'); // Redirect to home page
     } catch (err) {
       setError('Failed to log in with Google.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-10 p-6 shadow-md rounded-lg bg-white">
-      <h2 className="text-2xl font-semibold text-center mb-4 text-gray-800">Log In</h2>
+    <div className="max-w-md mx-auto mt-10 p-8 shadow-lg rounded-lg bg-white">
+      <h2 className="text-3xl font-bold text-center mb-6 text-[#972425]">Welcome Back</h2>
+      
       <form onSubmit={handleLogin} className="flex flex-col gap-4">
-        <input
-          type="email"
-          placeholder="Email"
-          className="p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#fcdc12]"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          className="p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#fcdc12]"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        {error && <p className="text-red-500">{error}</p>}
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            placeholder="Enter your email"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#fcdc12]"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            Password
+          </label>
+          <input
+            id="password"
+            type="password"
+            placeholder="Enter your password"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#fcdc12]"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+
+        {error && (
+          <div className="p-3 bg-red-100 text-red-700 rounded-lg">
+            {error}
+          </div>
+        )}
+
         <button
           type="submit"
-          className="p-2 bg-[#fcdc12] text-[#972425] rounded-lg font-semibold hover:bg-[#e0b812] transition duration-200"
+          disabled={isLoading}
+          className={`w-full p-3 rounded-lg font-semibold transition duration-200 ${
+            isLoading
+              ? 'bg-gray-300 cursor-not-allowed'
+              : 'bg-[#fcdc12] text-[#972425] hover:bg-[#e0b812]'
+          }`}
         >
-          Log In
+          {isLoading ? 'Logging in...' : 'Log In'}
         </button>
       </form>
       
-      <p className="text-center mt-4">
-        <a href="#" className="text-blue-500 hover:underline">Forgot Password?</a>
-      </p>
+      <div className="text-center mt-4">
+        <a 
+          href="/forgot-password" 
+          className="text-sm text-[#972425] hover:underline"
+        >
+          Forgot Password?
+        </a>
+      </div>
 
-      {/* Divider */}
-      <div className="flex items-center my-4">
+      <div className="flex items-center my-6">
         <hr className="flex-grow border-t border-gray-300" />
-        <span className="mx-2 text-gray-500">or</span>
+        <span className="mx-4 text-gray-500">or</span>
         <hr className="flex-grow border-t border-gray-300" />
       </div>
 
-      {/* Google Login */}
       <button
         onClick={handleGoogleLogin}
-        className="w-full flex items-center justify-center bg-red-500 text-white p-2 rounded-lg hover:bg-red-600 transition duration-200"
+        disabled={isLoading}
+        className={`w-full flex items-center justify-center p-3 rounded-lg font-medium transition duration-200 ${
+          isLoading
+            ? 'bg-gray-300 cursor-not-allowed'
+            : 'bg-red-500 text-white hover:bg-red-600'
+        }`}
       >
-        <FaGoogle className="mr-2" /> Log In with Google
+        <FaGoogle className="mr-3" /> 
+        {isLoading ? 'Signing in...' : 'Continue with Google'}
       </button>
+
+      <div className="text-center mt-6">
+        <p className="text-gray-600">
+          Don't have an account?{' '}
+          <a href="/signup" className="text-[#972425] font-semibold hover:underline">
+            Sign up
+          </a>
+        </p>
+      </div>
     </div>
   );
 };

@@ -36,7 +36,7 @@ const Career: React.FC = () => {
 
     try {
       // Sending data to Flask backend
-      const response = await axios.post("https://3139-62-24-118-61.ngrok-free.app/career/submit", formData);
+      const response = await axios.post("https://0af2-41-139-235-197.ngrok-free.app/career/submit", formData);
 
       if (response.status === 201) {
         alert("Thank you for joining our community!");

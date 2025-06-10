@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://akiliedge-solutions.co.ke/sitemap.xml
+
+# Disallow admin or private pages
+Disallow: /admin/
+Disallow: /private/
+Disallow: /dashboard/
+
+# Allow all other pages
+Allow: /services
+Allow: /about
+Allow: /careers
+Allow: /blogs
+Allow: /contact
+
+# Crawl-delay (optional, to prevent overloading the server)
+Crawl-delay: 

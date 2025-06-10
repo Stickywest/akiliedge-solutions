@@ -1,16 +1,18 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore'; // Import Firestore
+import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyD7E0KtTa0BARnZ1FHJal4Ah_b6Uk7oBR8",
-    authDomain: "akiliedge-96b6a.firebaseapp.com",
-    projectId: "akiliedge-96b6a",
-    storageBucket: "akiliedge-96b6a.appspot.com", // Fixed storage bucket URL
-    messagingSenderId: "1050262317463",
-    appId: "1:1050262317463:web:f0f5786957a947e65e3cd2"
-};
+    apiKey: "AIzaSyDOLJSNkYHDjGq6MkuFz-TYS0FSRC6Xj_M",
+    authDomain: "green1-7bcdd.firebaseapp.com",
+    projectId: "green1-7bcdd",
+    storageBucket: "green1-7bcdd.appspot.com",
+    messagingSenderId: "140480817439",
+    appId: "1:140480817439:web:1496acf13f7c7b93f3e82a"
+  };
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app); // Initialize Firestore
+export const storage = getStorage(app); // Initialize Firebase Storage
